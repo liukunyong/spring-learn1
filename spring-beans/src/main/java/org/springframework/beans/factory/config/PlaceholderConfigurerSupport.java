@@ -24,6 +24,8 @@ import org.springframework.lang.Nullable;
 import org.springframework.util.StringValueResolver;
 
 /**
+ * spring提供的一个工具类，用于解析bean定义中属性值里面的占位符。此类不能呗直接实例化使用
+ * 属性资源配置的基本抽象类，处理BD对象中，property中的value的占位符
  * Abstract base class for property resource configurers that resolve placeholders
  * in bean definition property values. Implementations <em>pull</em> values from a
  * properties file or other {@linkplain org.springframework.core.env.PropertySource

@@ -6,4 +6,5 @@
 		<constructor-arg index="0" value="ll"/>
 		<constructor-arg index="1" value="22"/>
 	</bean>
+	<bean id = "BeforeBeanFactory" class="com.dddd.postProcesser.BeforeBeanFactory"></bean>
 </beans>

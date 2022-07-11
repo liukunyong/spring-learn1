@@ -154,8 +154,11 @@ public class DefaultSingletonBeanRegistry extends SimpleAliasRegistry implements
 	protected void addSingletonFactory(String beanName, ObjectFactory<?> singletonFactory) {
 		Assert.notNull(singletonFactory, "Singleton factory must not be null");
 		synchronized (this.singletonObjects) {
+			//没有beanName的对象（一级缓存）
 			if (!this.singletonObjects.containsKey(beanName)) {
+				//将beanName，singletonFactory放到单例工厂的缓存（三级缓存）。存放的是lamada表达式
 				this.singletonFactories.put(beanName, singletonFactory);
+				//在二级缓存中一处beanName的相关缓存对象
 				this.earlySingletonObjects.remove(beanName);
 				this.registeredSingletons.add(beanName);
 			}
@@ -179,7 +182,9 @@ public class DefaultSingletonBeanRegistry extends SimpleAliasRegistry implements
 	@Nullable
 	protected Object getSingleton(String beanName, boolean allowEarlyReference) {
 		// Quick check for existing instance without full singleton lock
+		//在一级缓存中部获取beanName对应的单例对象
 		Object singletonObject = this.singletonObjects.get(beanName);
+		//如果没有，并且该beanName对应的单例bean正在创建中
 		if (singletonObject == null && isSingletonCurrentlyInCreation(beanName)) {
 			singletonObject = this.earlySingletonObjects.get(beanName);
 			if (singletonObject == null && allowEarlyReference) {
@@ -231,6 +236,7 @@ public class DefaultSingletonBeanRegistry extends SimpleAliasRegistry implements
 					this.suppressedExceptions = new LinkedHashSet<>();
 				}
 				try {
+					//从单例工厂中获取对象
 					singletonObject = singletonFactory.getObject();
 					newSingleton = true;
 				}
